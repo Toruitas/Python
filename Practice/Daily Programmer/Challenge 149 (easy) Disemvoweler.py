@@ -14,3 +14,9 @@ if __name__ == "__main__":
     text = input("Gimme a string bitch:").replace(" ","")
     print("".join(letter for letter in text if letter not in vowels))
     print("".join(letter for letter in text if letter in vowels))
+
+
+string = "This string ends with no period"
+
+print(''.join(letter * 2 for letter in string if letter > "f"))
+# looks like generator format is (do something for thing in other thing if condition

@@ -80,9 +80,9 @@ def download_csv(website):
 
 def rewrite_csv(csv_path):
     filename = csv_path
-    tempfile = NamedTemporaryFile(delete=False)
+    tempfile = NamedTemporaryFile(mode='w+', delete=False)
 
-    with open(filename,'rb') as readFile, tempfile: #open(tempfile,"w") as writefile
+    with open(filename,'r+') as readFile, tempfile: #open(tempfile,"w") as writefile
         reader = csv.reader(readFile, delimiter=',') #quotechar='"'
         writer = csv.writer(tempfile, delimiter=',') #fieldnames = ["stuff1", "stuff2", "stuff3"], for writeDict version
         headers = ['currency', 'rate', 'date', 'time', 'buy', 'sell', 'shorthand']
@@ -118,9 +118,12 @@ def return_rate_reader_complex(csv_path, currencies):
         rate1 = 1
         rate2 = 1
         for line in reader:
-            if currencies[0] in line['shorthand'] and currencies[0] != "USD":
+            shortsplit = line['shorthand'].split()
+            if currencies[0] == shortsplit[0]: #if is USD
+                rate1 = 1 #1USD = X currency
+            elif currencies[0] == shortsplit[2]:
                 rate1 = float(line['rate']) #1USD = X currency
-            if currencies[2] in line['shorthand'] and currencies[2] != "USD":
+            if currencies[2] == shortsplit[2]:
                 rate2 = float(line['rate']) #1USD = X currency
         return rate2/rate1
 
@@ -135,7 +138,7 @@ def return_available_exchanges_reader(csv_path):
         currencySelection = ''
         for line in reader:
             currencySelection += (line['shorthand'].split(" ")[2]) + ", "
-        print(currencySelection)
+        print(currencySelection + "and USD.")
 
 if __name__ == '__main__':
     website = 'http://download.finance.yahoo.com/d/quotes.csv?s=USDEUR=X,USDAUD=X,USDCAD=X,USDJPY=X,USDGBP=X,USDCHF=X,' \
