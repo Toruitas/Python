@@ -2,6 +2,37 @@ __author__ = 'Stuart'
 
 # Problem 1: convert C++ code to Python syntax
 
+def problem_one(string1, string2):
+    """
+    Counts letters in each string, then compares the resulting dictionaries. This is done in O(n), linearly.
+    :param string1:
+    :param string2:
+    :return:
+    """
+    if len(string1) != len(string1):
+        return False
+
+    letters_one = {}
+    letters_two = {}
+    
+    for letter in string1:
+        try:
+            if letters_one[letter]:
+                letters_one[letter] += 1
+        except KeyError:
+            letters_one[letter] = 1
+    for letter in string2:
+        try:
+            if letters_two[letter]:
+                letters_two[letter] += 1
+        except KeyError:
+            letters_two[letter] = 1
+
+    if letters_two == letters_one:
+        return True
+    else:
+        return False
+
 def no_name(string1, string2):
     """
     Takes two strings. If they are NOT the same length, return False.
@@ -54,4 +85,3 @@ def utility_function_2(str,j):
     :return: string minus the letter we don't want
     """
     return str[:j]+str[j+1:]
-
