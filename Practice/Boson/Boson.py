@@ -12,26 +12,25 @@ def problem_one(string1, string2):
     if len(string1) != len(string1):
         return False
 
-    letters_one = {}
-    letters_two = {}
-    
-    for letter in string1:
-        try:
-            if letters_one[letter]:
-                letters_one[letter] += 1
-        except KeyError:
-            letters_one[letter] = 1
-    for letter in string2:
-        try:
-            if letters_two[letter]:
-                letters_two[letter] += 1
-        except KeyError:
-            letters_two[letter] = 1
-
-    if letters_two == letters_one:
+    if problem_one_helper(string1) == problem_one_helper(string2):
         return True
     else:
         return False
+
+def problem_one_helper(string):
+    """
+    Helper for P1. Takes string, returns dict of letters contained and their count.
+    :param string: a string
+    :return: dictionary with keys being letters, and values being a count.
+    """
+    letters = {}
+    for letter in string:
+        try:
+            if letters[letter]:
+                letters[letter] += 1
+        except KeyError:
+            letters[letter] = 1
+    return letters
 
 def no_name(string1, string2):
     """
