@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- reference Moment.js library -->
+  <script src="moment-with-locales.js" type="text/javascript"></script>
+</head>
+<body>
+
+<h2>Moment Date</h2>
+<!-- container for Moment.js output -->
+<div id="displayMoment"></div>
+
+<h2>JavaScript Date</h2>
+<!-- container for JavaScript Date output -->
+<div id="displayJsDate"></div>
+
+<script type="text/javascript">
+(function()
+{
+  // instantiate a moment object
+  var NowMoment = moment();
+  // display value of moment object in #displayMoment div
+  var eDisplayMoment = document.getElementById('displayMoment');
+  eDisplayMoment.innerHTML = NowMoment.format('YYYY-M-D');
+
+})();
+</script>
+
+</body>
+</html>

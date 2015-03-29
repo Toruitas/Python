@@ -1,0 +1,22 @@
+
+
+
+<p>Dear {{ user.nickname }},</p>
+<p>{{ _('%(nickname)s is now a follower.',
+    nickname='<a href="{}">{}</a>'.format(url_for("user",nickname = follower.nickname, _external=True),follower.nickname)) }}</p>
+        <!-- _external=True: by default, url_for generates URLs relative to current page's domain. For example,
+        return value for url_for('index') will be /index. While in this case, we want http://localhost:5000/index.
+        In an email there is no domain context, so we have to force fully qualified emails that include the domain, and
+        _external argument is just for that.
+        -->
+<table>
+    <tr valign="top">
+        <td><img src="{{ follower.avatar(50) }}" /></td>
+        <td>
+            <a href="{{ url_for('user', nickname=follower.nickname, _external=True) }}">{{ follower.nickname }}</a><br />
+            {{ follower.about_me }}
+        </td>
+    </tr>
+</table>
+<p>{{ _('Regards,) }}</p>
+<p>{{ _('The <code>microblog</code> admin') }}</p>
