@@ -10,7 +10,7 @@ http://www.kscottz.com/web-scraping-with-beautifulsoup-and-python/
 """
 
 from bs4 import BeautifulSoup
-from multiprocessing import Pool
+from multiprocessing.pool import ThreadPool as Pool
 import requests
 import csv
 import datetime
@@ -36,9 +36,9 @@ def scrape_all(url,limit=1000):
     while results_start < max_results:
         url_list.append(START+"&start={}".format(results_start))
         results_start +=10
-    #assign_bots(url_list)
-    for url in url_list:
-        scrape_one(url)
+    assign_bots(url_list)
+    # for url in url_list:
+    #     scrape_one(url)
 
 
 def scrape_all_recursive(url,limit=-1):
@@ -131,24 +131,24 @@ def scrape_one(url):
             print(company.get_text(),position.get_text(),location.get_text())
         except:
             print(job.prettify())
-        try:
-            with open('Indeed_scraped_{}.csv'.format(datetime.date.today()),'a', newline='', encoding='utf-8') as csvfile:
-                writer = csv.writer(csvfile)
-                writer.writerow([company.get_text(),position.get_text(),location.get_text()])
-        except:
-            print("Failed to write to CSV.")
+        # try:
+        #     with open('Indeed_scraped_{}.csv'.format(datetime.date.today()),'a', newline='', encoding='utf-8') as csvfile:
+        #         writer = csv.writer(csvfile)
+        #         writer.writerow([company.get_text(),position.get_text(),location.get_text()])
+        # except:
+        #     print("Failed to write to CSV.")
 
     #return [i for i in soup.find_all('div',class_="result")]
     print("scraped page {}".format(url))
     return soup
 
 def assign_bots(urls):
-    pool = Pool(4)  # 8 worker bots, generally want to use double the amount of cores you have. In this case, 8.
+    pool = Pool(8)  # 8 worker bots, generally want to use double the amount of cores you have. In this case, 8.
     # reduced to 4 for politeness and not bannyness, and since we won't need more than that
     pool.map(scrape_one,urls)
 
 if __name__=="__main__":
     START = "http://www.indeed.com/jobs?q=%22Salesforce%22&sort=date"
     BASE = "http://www.indeed.com"
-    LIMIT = 50  # page limit
+    LIMIT = 500  # page limit
     scrape_all(START,LIMIT)
