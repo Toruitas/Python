@@ -15,7 +15,7 @@ import requests
 import csv
 import datetime
 
-def scrape_all(url,limit=-1):
+def scrape_all(url,limit=1000):
     """
     Recursive.
     Scrapes all pages up to limit. -1 indicates scrapes forever.
@@ -26,39 +26,20 @@ def scrape_all(url,limit=-1):
     :return:
     """
     soup = scrape_one(url)
-    #pages = soup.select('.pagination > a')
     max_results = soup.select('#searchCount')[0].get_text().split(" ")[-1].replace(",","")
-    results_start = 0
+    results_start = 10
     url_list = []
-    if int(max_results) > 1000:
-        max_results = 1000
+    if int(max_results) > limit:
+        max_results = limit
     else:
         pass
     while results_start < max_results:
         url_list.append(START+"&start={}".format(results_start))
         results_start +=10
-    assign_bots(url_list)
-    # next_page = (pages[-1].attrs['href'])
-    # next_pages_list = [BASE+next_page]
-    # for page in pages:
-    #     if page.attrs['href'] > next_page:
-    #         next_pages_list.append(BASE + page.attrs['href'])
-    #  # if too many pages for limit, only do the first n items in list
-    #
-    # if "Next" not in pages[-1].get_text() or limit == 0:
-    #     print("End of the line")
-    # elif len(next_pages_list) >= limit > 0:
-    #     next_pages_list = next_pages_list[:limit-1]
-    #     print(next_pages_list)
-    #     # robots for that many
-    #     assign_bots(next_pages_list)
-    # else:  # compare next url to numbered URLs. If different, add to list. Split on =.
-    #     # robots for all
-    #     assign_bots(next_pages_list[:-1])
-    #     scrape_all_recursive(BASE+next_pages_list[-1], limit-len(next_pages_list))
-    #     # print("Next page, coming up.")
-    #     # skips to last page in pages list, and accounts for that wrt the limit in the next call, subtracting as
-    #     # many items are in the next pages list from the limit
+    #assign_bots(url_list)
+    for url in url_list:
+        scrape_one(url)
+
 
 def scrape_all_recursive(url,limit=-1):
     """
@@ -150,12 +131,12 @@ def scrape_one(url):
             print(company.get_text(),position.get_text(),location.get_text())
         except:
             print(job.prettify())
-        # try:
-        #     with open('Indeed_scraped_{}.csv'.format(datetime.date.today()),'a', newline='', encoding='utf-8') as csvfile:
-        #         writer = csv.writer(csvfile)
-        #         writer.writerow([company.get_text(),position.get_text(),location.get_text()])
-        # except:
-        #     print("Failed to write to CSV.")
+        try:
+            with open('Indeed_scraped_{}.csv'.format(datetime.date.today()),'a', newline='', encoding='utf-8') as csvfile:
+                writer = csv.writer(csvfile)
+                writer.writerow([company.get_text(),position.get_text(),location.get_text()])
+        except:
+            print("Failed to write to CSV.")
 
     #return [i for i in soup.find_all('div',class_="result")]
     print("scraped page {}".format(url))
@@ -169,5 +150,5 @@ def assign_bots(urls):
 if __name__=="__main__":
     START = "http://www.indeed.com/jobs?q=%22Salesforce%22&sort=date"
     BASE = "http://www.indeed.com"
-    LIMIT = 5  # page limit
+    LIMIT = 50  # page limit
     scrape_all(START,LIMIT)
