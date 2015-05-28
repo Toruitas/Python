@@ -3,6 +3,7 @@ __author__ = 'Stuart'
 
 """
 http://blog.miguelgrinberg.com/post/easy-web-scraping-with-python
+https://gist.github.com/miguelgrinberg/5f52ceb565264b1e969a
 http://stackoverflow.com/questions/26497722/scrape-multiple-pages-with-beautifulsoup-and-python
 http://stackoverflow.com/questions/26727328/how-to-scrape-the-web-table-with-multiple-pages-using-r-or-python
 http://stackoverflow.com/questions/10340290/python-beautifulsoup-looping-through-multiple-pages
@@ -17,10 +18,8 @@ import datetime
 
 def scrape_all(url,limit=1000):
     """
-    Recursive.
-    Scrapes all pages up to limit. -1 indicates scrapes forever.
-    Can't take advantage of robots, unfortunately.
-    Could modify to scrape the next 3 pages, and grab the "next" from the third one.
+    iterative, produces list of pages to scrape then assigns bots to scrape them.
+    Serial scraping commented out.
     :param url: url to scrape
     :param limit:
     :return:
