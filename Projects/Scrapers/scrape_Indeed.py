@@ -130,12 +130,12 @@ def scrape_one(url):
             print(company.get_text(),position.get_text(),location.get_text())
         except:
             print(job.prettify())
-        # try:
-        #     with open('Indeed_scraped_{}.csv'.format(datetime.date.today()),'a', newline='', encoding='utf-8') as csvfile:
-        #         writer = csv.writer(csvfile)
-        #         writer.writerow([company.get_text(),position.get_text(),location.get_text()])
-        # except:
-        #     print("Failed to write to CSV.")
+        try:
+            with open('Indeed_scraped_{}.csv'.format(datetime.date.today()),'a', newline='', encoding='utf-8') as csvfile:
+                writer = csv.writer(csvfile)
+                writer.writerow([company.get_text(),position.get_text(),location.get_text()])
+        except:
+            print("Failed to write to CSV.")
 
     #return [i for i in soup.find_all('div',class_="result")]
     print("scraped page {}".format(url))
@@ -151,3 +151,4 @@ if __name__=="__main__":
     BASE = "http://www.indeed.com"
     LIMIT = 500  # page limit
     scrape_all(START,LIMIT)
+
