@@ -2,11 +2,12 @@
 # -*- coding: utf-8 -*-
 __author__ = 'Stuart'
 from bs4 import BeautifulSoup
-# from multiprocessing.pool import ThreadPool as Pool
 import requests
 import urllib.parse
 import time
 from selenium import webdriver
+import csv
+
 # from selenium.webdriver.common.by import By
 # from selenium.webdriver.support.ui import WebDriverWait
 # from selenium.webdriver.support import expected_conditions as EC
@@ -31,19 +32,19 @@ def scrape_list(url):
     :param url: seed-db.com page
     :return: Nothing, but adds to CSV.
     """
+    print(url)
     response = requests.get(url)
     soup = BeautifulSoup(response.text)
-    list = soup.select(".table > tr")
-
+    list = soup.select(".table > tbody > tr")
     driver = init_driver()
     # if want to use bots, create a large list of URLs.
-    for investor in list[1:]:  # skip first row, as that's just titles. Don't skip if want titles.
+    for investor in list[1:2]:  # skip first row, as that's just titles. Don't skip if want titles.
         row = investor.select('a')
         name, link = row[0].get_text(), row[0].attrs['href']
         link = urllib.parse.urljoin(BASE,link)
         name, home_address = scrape_company(driver,link)
-        # print(name,link)
-        # here we add to a csv
+        print(name,link)
+        add_to_csv(name,home_address)
     driver.quit()
 
 def scrape_company(driver,url):
@@ -56,7 +57,7 @@ def scrape_company(driver,url):
     company = requests.get(url)
     company_soup = BeautifulSoup(company.text).select('h4 > a')
     deep_url,name = company_soup[0].attrs['href'], company_soup[0].get_text()
-    # print(deep_url,name)
+    print(deep_url,name)
 
     # using BS4 to try to get crunch base info
     # crunch_base_page = requests.get(deep_url)
@@ -77,6 +78,7 @@ def init_driver():
     return driver
 
 def grab_company_address(driver,url):
+    print("grabbing company address: {}".format(url))
     driver.get(url)
     time.sleep(45)  # long sleep because this site is anal about robots
     # content = driver.find_element_by_class_name('definition-list container')
@@ -84,15 +86,18 @@ def grab_company_address(driver,url):
     crunchy_soup = BeautifulSoup(html_page,'html5lib')
     box = crunchy_soup.select('div.definition-list.container')
     # print(box)
-    website = box[0].find('dt',text='Website:')
-    addy = website.next_sibling.get_text()
-    print(addy)
-    return addy
+    website_text = box[0].find('dt',text='Website:')
+    home_address = website_text.next_sibling.get_text()
+    print(home_address)
+    return home_address
     # print(content.getText())
     # box = driver.wait.until(EC.presence_of_element_located(()))
 
 def add_to_csv(name, home_address):
-    with open('seed-db.csv','w',newline='') as csvfile:
+    with open('seed-db.csv','a',newline='') as csvfile:
+        #fieldnames = ['Company Name','Homepage']
+        writer = csv.writer(csvfile)
+        writer.writerow([name,home_address])
 
 
 
@@ -104,6 +109,7 @@ if __name__=="__main__":
     for url in urls:
         scrape_list(url)
 
+    # add_to_csv('Didi Dache','http://www.xiaojukeji.com')
     # url = "http://www.seed-db.com/investorgraph/investortable?type=companies"
     # scrape_list(url)
     # url = "https://www.crunchbase.com/organization/y-combinator"
