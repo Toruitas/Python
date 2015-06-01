@@ -22,6 +22,17 @@ http://stackoverflow.com/questions/13960326/how-can-i-parse-a-website-using-sele
 http://stackoverflow.com/questions/14529849/python-scraping-javascript-using-selenium-and-beautiful-soup
 http://selenium-python.readthedocs.org/en/latest/page-objects.html
 http://www.marinamele.com/selenium-tutorial-web-scraping-with-selenium-and-python
+https://pypi.python.org/pypi/selenium
+https://selenium-python.readthedocs.org/locating-elements.html#locating-elements-by-css-selectors
+https://selenium-python.readthedocs.org/locating-elements.html#locating-hyperlinks-by-link-text
+https://selenium-python.readthedocs.org/page-objects.html
+http://saucelabs.com/resources/selenium/css-selectors
+http://shahriar.svbtle.com/the-possibly-forgotten-optional-else-in-python-try-statement
+http://shahriar.svbtle.com/pythons-else-clause-in-loops
+http://stackoverflow.com/questions/12325454/how-to-get-text-of-an-element-in-selenium-webdriver-via-the-python-api-without
+http://stackoverflow.com/questions/7263824/get-html-source-of-webelement-in-selenium-webdriver
+http://www.crummy.com/software/BeautifulSoup/bs4/doc/#attributes
+
 """
 
 def scrape_list(url):
