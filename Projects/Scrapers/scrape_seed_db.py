@@ -81,6 +81,10 @@ def scrape_company(driver,url):
     return name, final_url
 
 def init_driver():
+    """
+    Initializes firefox driver.
+    :return: driver object
+    """
     driver = webdriver.Firefox()
     # driver.wait = WebDriverWait(driver,45)
     # driver.wait = WebDriverWait(driver,45).until(
@@ -89,6 +93,13 @@ def init_driver():
     return driver
 
 def grab_company_address(driver,url):
+    """
+    Loads CrunchBase in firefox with selenium, loads the full page source, grabs the div we want, and strips out
+    the url
+    :param driver: firefox driver object
+    :param url: crunch base company profile url
+    :return: company urls
+    """
     print("grabbing company address: {}".format(url))
     driver.get(url)
     time.sleep(45)  # long sleep because this site is anal about robots
@@ -105,6 +116,12 @@ def grab_company_address(driver,url):
     # box = driver.wait.until(EC.presence_of_element_located(()))
 
 def add_to_csv(name, home_address):
+    """
+    Adds company name and address to csv file
+    :param name: string name for company
+    :param home_address: string url for company
+    :return: nothing
+    """
     with open('seed-db.csv','a',newline='') as csvfile:
         #fieldnames = ['Company Name','Homepage']
         writer = csv.writer(csvfile)

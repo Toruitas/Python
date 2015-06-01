@@ -28,10 +28,16 @@ from selenium.common.exceptions import ElementNotVisibleException
 from selenium.common.exceptions import TimeoutException
 
 def scrape_BI(url):
+    """
+    Uses BS to scrape the one-page version of BI's slideshow article.
+    Finds individual company slides' titles, then feeds that name to Google.
+    :param url: one-page article's URL
+    :return: nothing, unless later want to add CSV features
+    """
     response = requests.get(url)
     soup = BeautifulSoup(response.text)
     companies = soup.find_all('h3', class_='slide-title')
-    names = []
+    #names = []
     driver = init_driver()
     for company in companies[:]:
         name = company.getText().strip()
@@ -46,6 +52,10 @@ def scrape_BI(url):
     #print(names)
 
 def init_driver():
+    """
+    Creates web driver with Firefox.
+    :return: driver obj
+    """
     driver = webdriver.Firefox()
     driver.wait = WebDriverWait(driver,5)
     return driver
@@ -55,6 +65,9 @@ def load_google(driver,name):
     Pulls the h3 class=r (first result's) data-href out.
     Again, must use selenium.
     Google API client not an option for distribution.
+
+    #TODO: modify it so that if is already on instant search page will not go back to google.com
+
     :param name: queried name
     :return: html line including link and name
     """
