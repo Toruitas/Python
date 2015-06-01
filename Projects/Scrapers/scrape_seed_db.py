@@ -21,6 +21,7 @@ http://stackoverflow.com/questions/11750447/performing-a-copy-and-paste-with-sel
 http://stackoverflow.com/questions/13960326/how-can-i-parse-a-website-using-selenium-and-beautifulsoup-in-python
 http://stackoverflow.com/questions/14529849/python-scraping-javascript-using-selenium-and-beautiful-soup
 http://selenium-python.readthedocs.org/en/latest/page-objects.html
+http://www.marinamele.com/selenium-tutorial-web-scraping-with-selenium-and-python
 """
 
 def scrape_list(url):
@@ -32,7 +33,6 @@ def scrape_list(url):
     :param url: seed-db.com page
     :return: Nothing, but adds to CSV.
     """
-    print(url)
     response = requests.get(url)
     soup = BeautifulSoup(response.text)
     list = soup.select(".table > tbody > tr")
